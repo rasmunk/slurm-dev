@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  slurmctld:
+    image: 'slurm-centos'
+    hostname: slurmctld
+    container_name: slurmctld
+    volumes:
+      - ./config/slurm.conf:/etc/slurm/slurm.conf:ro
+    configs:
+      - source: munge_key
+        target: /etc/munge/munge.key
+        uid: '999'
+        gid: '993'
+        mode: 0400
+    networks:
+      - slurm
+    command: sudo -u munge munged && sudo -u slurm slurmctld -D
+  worker01:
+    image: nielsbohr/slurm-notebook:edge
+    hostname: worker01
+    container_name: worker01
+    volumes:
+      - ./config/slurm.conf:/etc/slurm/slurm.conf:ro
+      - ./docker-entrypoint.sh:/app/docker-entrypoint.sh:ro
+    configs:
+      - source: munge_key
+        target: /etc/munge/munge.key
+        uid: '997'
+        gid: '993'
+        mode: 0400
+    networks:
+      - slurm
+    command: /app/docker-entrypoint.sh
+
+networks:
+  slurm:
+
+configs:
+  munge_key:
+    file: ./munge/munge.key
