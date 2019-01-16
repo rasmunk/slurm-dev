@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   slurmctld:
-    image: 'slurm-centos'
+    image: nielsbohr/slurmctld
     hostname: slurmctld
     container_name: slurmctld
     volumes:
