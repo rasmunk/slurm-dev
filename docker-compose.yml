@@ -30,12 +30,13 @@ services:
         mode: 0400
     networks:
       - slurm
-  worker02:
-    image: nielsbohr/slurmd:edge
-    hostname: worker02
-    container_name: worker02
+  notebook:
+    image: nielsbohr/slurm-notebook:edge
+    hostname: notebook
+    container_name: notebook
     volumes:
       - ./config/slurm.conf:/etc/slurm/slurm.conf:ro
+      - ./slurm-notebook/docker-entrypoint.sh:/app/docker-entrypoint.sh:ro
     configs:
       - source: munge_key
         target: /etc/munge/munge.key
@@ -44,6 +45,7 @@ services:
         mode: 0400
     networks:
       - slurm
+    command: /app/docker-entrypoint.sh
 
 networks:
   slurm:
