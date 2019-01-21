@@ -9,6 +9,8 @@ volumes:
 configs:
   munge_key:
     file: ./munge/munge.key
+  slurm_conf:
+    file: ./config/slurm.conf
   jupyterhub_config:
     file: ./jupyterhub/jupyterhub_config.py
   cull_idle_config:
@@ -21,14 +23,14 @@ services:
     container_name: slurmctld
     environment:
       TZ: Europe/Copenhagen
-    volumes:
-      - ./config/slurm.conf:/etc/slurm/slurm.conf:ro
     configs:
       - source: munge_key
         target: /etc/munge/munge.key
         uid: '997'
         gid: '993'
         mode: 0400
+      - source: slurm_conf
+        target: /etc/slurm/slurm.conf
     networks:
       - slurm
     command: sudo -u munge munged && sudo -u slurm slurmctld -D
@@ -38,14 +40,14 @@ services:
     container_name: worker01
     environment:
       TZ: Europe/Copenhagen
-    volumes:
-      - ./config/slurm.conf:/etc/slurm/slurm.conf:ro
     configs:
       - source: munge_key
         target: /etc/munge/munge.key
         uid: '997'
         gid: '993'
         mode: 0400
+      - source: slurm_conf
+        target: /etc/slurm/slurm.conf
     networks:
       - slurm
   jupyterhub:

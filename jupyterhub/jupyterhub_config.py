@@ -9,12 +9,15 @@ c.JupyterHub.ip = '0.0.0.0'
 c.JupyterHub.hub_ip = '0.0.0.0'
 c.JupyterHub.base_url = '/slurm'
 
-mounts = [{'type': 'bind',
-           'source': '/home/rasmus/repos/slurm-dev/config/slurm.conf',
-           'target': '/etc/slurm/slurm.conf'},
-          {'type': 'bind',
-           'source': '/home/rasmus/repos/slurm-dev/munge/munge.key',
-           'target': '/etc/munge/munge.key'}]
+configs = [{'config_name': 'slurm-dev_munge_key',
+            'filename': '/etc/munge/munge.key',
+            'uid': '997',
+            'gid': '993',
+            'mode': 0o400},
+            {'config_name': 'slurm-dev_slurm_conf',
+            'filename': '/etc/slurm/slurm.conf'}]
+
+c.SwarmSpawner.configs = configs
 
 # First pulls can be really slow, so let's give it a big timeout
 c.SwarmSpawner.start_timeout = 60 * 15
@@ -36,8 +39,7 @@ c.SwarmSpawner.use_user_options = True
 
 c.SwarmSpawner.dockerimages = [
     {'name': 'base-notebook',
-     'image': 'nielsbohr/slurm-notebook:edge',
-     'mounts': mounts}
+     'image': 'nielsbohr/slurm-notebook:edge'}
 ]
 
 # Authenticator -> remote user header
