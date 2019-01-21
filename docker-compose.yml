@@ -1,10 +1,26 @@
 version: '3.7'
 
+networks:
+  slurm:
+
+volumes:
+  jhubstate:
+
+configs:
+  munge_key:
+    file: ./munge/munge.key
+  jupyterhub_config:
+    file: ./jupyterhub/jupyterhub_config.py
+  cull_idle_config:
+    file: ./jupyterhub/cull_idle_servers.py
+
 services:
   slurmctld:
     image: nielsbohr/slurmctld:edge
     hostname: slurmctld
     container_name: slurmctld
+    environment:
+      TZ: Europe/Copenhagen
     volumes:
       - ./config/slurm.conf:/etc/slurm/slurm.conf:ro
     configs:
@@ -20,6 +36,8 @@ services:
     image: nielsbohr/slurmd:edge
     hostname: worker01
     container_name: worker01
+    environment:
+      TZ: Europe/Copenhagen
     volumes:
       - ./config/slurm.conf:/etc/slurm/slurm.conf:ro
     configs:
@@ -31,9 +49,11 @@ services:
     networks:
       - slurm
   jupyterhub:
-    image: rasmunk/swarmspawner:latest
+    image: nielsbohr/jupyterhub:latest
     hostname: jupyterhub
     container_name: jupyterhub
+    environment:
+      TZ: Europe/Copenhagen
     ports: 
       - "80:8000"
     configs:
@@ -43,6 +63,8 @@ services:
       - source: cull_idle_config
         target: /srv/jupyterhub/cull_idle_servers.py
         mode: 0440
+    networks:
+      - slurm
     command: jupyterhub -f /etc/jupyterhub/jupyterhub_config.py
     volumes:
       # The jupyterhub service needs accces to the docker daemon process
@@ -52,17 +74,3 @@ services:
       - type: volume
         source: jhubstate
         target: /srv/jupyterhub
-
-networks:
-  slurm:
-
-volumes:
-  jhubstate:
-
-configs:
-  munge_key:
-    file: ./munge/munge.key
-  jupyterhub_config:
-    file: ./jupyterhub/jupyterhub_config.py
-  cull_idle_config:
-    file: ./jupyterhub/cull_idle_servers.py
