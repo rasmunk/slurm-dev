@@ -34,22 +34,6 @@ services:
     networks:
       - slurm
     command: sudo -u munge munged && sudo -u slurm slurmctld -D
-  worker01:
-    image: nielsbohr/slurmd:edge
-    hostname: worker01
-    container_name: worker01
-    environment:
-      TZ: Europe/Copenhagen
-    configs:
-      - source: munge_key
-        target: /etc/munge/munge.key
-        uid: '997'
-        gid: '993'
-        mode: 0400
-      - source: slurm_conf
-        target: /etc/slurm/slurm.conf
-    networks:
-      - slurm
   jupyterhub:
     image: nielsbohr/jupyterhub:latest
     hostname: jupyterhub
@@ -76,3 +60,48 @@ services:
       - type: volume
         source: jhubstate
         target: /srv/jupyterhub
+  worker01:
+    image: nielsbohr/slurmd:edge
+    hostname: worker01
+    environment:
+      TZ: Europe/Copenhagen
+    configs:
+      - source: munge_key
+        target: /etc/munge/munge.key
+        uid: '997'
+        gid: '993'
+        mode: 0400
+      - source: slurm_conf
+        target: /etc/slurm/slurm.conf
+    networks:
+      - slurm
+  worker02:
+    image: nielsbohr/slurmd:edge
+    hostname: worker02
+    environment:
+      TZ: Europe/Copenhagen
+    configs:
+      - source: munge_key
+        target: /etc/munge/munge.key
+        uid: '997'
+        gid: '993'
+        mode: 0400
+      - source: slurm_conf
+        target: /etc/slurm/slurm.conf
+    networks:
+      - slurm
+  worker03:
+    image: nielsbohr/slurmd:edge
+    hostname: worker03
+    environment:
+      TZ: Europe/Copenhagen
+    configs:
+      - source: munge_key
+        target: /etc/munge/munge.key
+        uid: '997'
+        gid: '993'
+        mode: 0400
+      - source: slurm_conf
+        target: /etc/slurm/slurm.conf
+    networks:
+      - slurm

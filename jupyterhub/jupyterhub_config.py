@@ -14,7 +14,7 @@ configs = [{'config_name': 'slurm-dev_munge_key',
             'uid': '997',
             'gid': '993',
             'mode': 0o400},
-            {'config_name': 'slurm-dev_slurm_conf',
+           {'config_name': 'slurm-dev_slurm_conf',
             'filename': '/etc/slurm/slurm.conf'}]
 
 c.SwarmSpawner.configs = configs
