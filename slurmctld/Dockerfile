@@ -16,23 +16,12 @@ RUN yum makecache fast \
            bzip2 \
            perl \
            gcc \
-           gcc-c++\
-           vim-enhanced \
-           git \
+           gcc-c++ \
            make \
            munge \
            munge-devel \
-           python-devel \
-           python-pip \
-           python34 \
-           python34-devel \
-           python34-pip \
-           psmisc \
-           bash-completion \
            nano \
-           neovim \
            openmpi \
-           openmpi-devel \
            mailx \
            sudo
 

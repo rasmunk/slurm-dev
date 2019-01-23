@@ -16,12 +16,15 @@ RUN yum makecache fast \
     && yum -y install epel-release \
     && yum -y install \
         wget \
-        perl \
         bzip2 \
+        perl \
         gcc \
+        gcc-c++ \
         make \
         munge \
         munge-devel \
+        nano \
+        openmpi \
         sudo
 
 RUN cd \

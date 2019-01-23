@@ -19,6 +19,10 @@ configs = [{'config_name': 'slurm-dev_munge_key',
 
 c.SwarmSpawner.configs = configs
 
+mounts = [{'type': 'bind',
+           'source': os.path.join('/home/rasmus/repos/slurm-dev', 'notebook'),
+           'target': '/home/jovyan/work/mpi'}]
+
 # First pulls can be really slow, so let's give it a big timeout
 c.SwarmSpawner.start_timeout = 60 * 15
 
@@ -39,7 +43,8 @@ c.SwarmSpawner.use_user_options = True
 
 c.SwarmSpawner.dockerimages = [
     {'name': 'base-notebook',
-     'image': 'nielsbohr/slurm-notebook:edge'}
+     'image': 'nielsbohr/slurm-notebook:edge',
+     'mounts': mounts}
 ]
 
 # Authenticator -> remote user header
