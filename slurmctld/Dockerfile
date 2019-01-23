@@ -23,7 +23,8 @@ RUN yum makecache fast \
            nano \
            openmpi \
            mailx \
-           sudo
+           sudo \
+           net-tools
 
 RUN set -x \
     && wget -O slurm.tar.bz2 "$SLURM_DOWNLOAD_URL" \

@@ -25,7 +25,8 @@ RUN yum makecache fast \
         munge-devel \
         nano \
         openmpi \
-        sudo
+        sudo \
+        net-tools
 
 RUN cd \
     && wget -O slurm.tar.bz2 "$SLURM_DOWNLOAD_URL" \

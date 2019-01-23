@@ -28,7 +28,7 @@ c.SwarmSpawner.start_timeout = 60 * 15
 
 c.SwarmSpawner.jupyterhub_service_name = 'slurm-dev_jupyterhub'
 
-c.SwarmSpawner.networks = ["slurm-dev_slurm"]
+c.SwarmSpawner.networks = ["slurm-dev_default"]
 
 notebook_dir = os.environ.get('NOTEBOOK_DIR') or '/home/jovyan/work/'
 c.SwarmSpawner.notebook_dir = notebook_dir
