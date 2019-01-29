@@ -1,8 +1,5 @@
 version: '3.7'
 
-networks:
-  slurm:
-
 volumes:
   jhubstate:
 
@@ -31,9 +28,12 @@ services:
         mode: 0400
       - source: slurm_conf
         target: /etc/slurm/slurm.conf
-    networks:
-      - slurm
     command: sudo -u munge munged && sudo -u slurm slurmctld -D
+  openldap:
+    image: osixia/openldap:1.2.3
+    environment:
+      TZ: Europe/Copenhagen
+    
   jupyterhub:
     image: nielsbohr/jupyterhub:latest
     hostname: jupyterhub
@@ -49,8 +49,6 @@ services:
       - source: cull_idle_config
         target: /srv/jupyterhub/cull_idle_servers.py
         mode: 0440
-    networks:
-      - slurm
     command: jupyterhub -f /etc/jupyterhub/jupyterhub_config.py
     volumes:
       # The jupyterhub service needs accces to the docker daemon process
@@ -74,8 +72,6 @@ services:
         mode: 0400
       - source: slurm_conf
         target: /etc/slurm/slurm.conf
-    networks:
-      - slurm
   worker02:
     image: nielsbohr/slurmd:edge
     hostname: worker02
@@ -89,8 +85,6 @@ services:
         mode: 0400
       - source: slurm_conf
         target: /etc/slurm/slurm.conf
-    networks:
-      - slurm
   worker03:
     image: nielsbohr/slurmd:edge
     hostname: worker03
@@ -104,5 +98,3 @@ services:
         mode: 0400
       - source: slurm_conf
         target: /etc/slurm/slurm.conf
-    networks:
-      - slurm
