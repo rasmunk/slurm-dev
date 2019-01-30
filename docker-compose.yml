@@ -31,9 +31,9 @@ services:
     command: sudo -u munge munged && sudo -u slurm slurmctld -D
   openldap:
     image: osixia/openldap:1.2.3
+    container_name: openldap
     environment:
       TZ: Europe/Copenhagen
-    
   jupyterhub:
     image: nielsbohr/jupyterhub:latest
     hostname: jupyterhub
@@ -59,6 +59,11 @@ services:
       - type: volume
         source: jhubstate
         target: /srv/jupyterhub
+  nfs-server:
+    image: nielsbohr/nfs-server:edge
+    container_name: nfs-server
+    cap_add:
+      - SYS_ADMIN
   worker01:
     image: nielsbohr/slurmd:edge
     hostname: worker01
